@@ -22,7 +22,7 @@ function upload_main {
     # Option parsing
     OPTIND=1
     local force=false
-    while getopts h opt; do
+    while getopts hf opt; do
         case $opt in
         h)
             upload_usage
