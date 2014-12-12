@@ -117,6 +117,7 @@ function build_main {
     shift $((OPTIND - 1))
 
     if [ "$#" -lt "1" ]; then
+        build_usage
         exit 1
     fi
 
