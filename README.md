@@ -4,7 +4,8 @@ beb
 beb (Better ElasticBeanstalk) is a commandline tool for
 building and deploying self-contained AWS ElasticBeanstalk builds.
 
-It is built out of frustration with the `eb` tool that AWS provides.
+It is built out of frustration with the `eb` tool that AWS provides,
+and currently provides only what i need to not go insane.
 
 
 AWS EB Platforms
