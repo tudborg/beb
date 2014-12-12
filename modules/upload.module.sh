@@ -43,7 +43,6 @@ function upload_main {
     # assert that we have deps
 
     bb-exe? aws || bb-exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
-    bb-exe? jq  || bb-exit 1 "Missing jq      ( http://stedolan.github.io/jq/ )"
 
 
     local artifact="$1"

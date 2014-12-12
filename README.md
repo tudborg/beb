@@ -21,7 +21,7 @@ Dependencies
 ------------
 
 Beb is written in bash and utilizes the [AWS CLI][awscli] for all
-interaction with AWS. It uses [`jq`][jq] to parse the returned json.
+interaction with AWS.
 
 You can build without these dependencies, as only modules that use
 them, will check for their presence.
@@ -34,24 +34,13 @@ To build and deploy a PHP composer projekt you will need:
     - `composer` (and ofc `php`)
 - Upload (upload the artifact to s3)
     - `aws`
-    - `jq`
 - Create (create an ElasticBeanstalk application version)
     - `aws`
-    - `jq`
-- Deploy (deploy an application version to an environment)
+- Release (deploy an application version to an environment)
     - `aws`
-    - `jq`
-
-
-
-
-
-
-
 
 
 
 
 [awscli]: http://aws.amazon.com/cli/
-[jq]: http://stedolan.github.io/jq/
 
