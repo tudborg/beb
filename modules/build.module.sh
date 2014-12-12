@@ -121,6 +121,10 @@ function build_main {
         exit 1
     fi
 
+    bb-exe? zip || bb-exit 1 "Missing zip"
+    bb-exe? git || bb-exit 1 "Missing git"
+
+
 
     local gitdir="$(dir_resolve $1)"
     bb-assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"

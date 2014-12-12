@@ -19,17 +19,6 @@ source "$SCRIPT_DIR/beb.lib.sh"
 
 
 
-
-#
-# Assert that we have all deps
-#
-
-bb-exe? aws || bb-exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
-bb-exe? jq  || bb-exit 1 "Missing jq      ( http://stedolan.github.io/jq/ )"
-bb-exe? zip || bb-exit 1 "Missing zip"
-bb-exe? git || bb-exit 1 "Missing git"
-
-
 #
 # function for listing available modules
 #
