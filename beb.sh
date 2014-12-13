@@ -51,42 +51,48 @@ $(get_modules | sed 's/^/    /')
 EOL
 }
 
-#
-# Initial check for at least the module name
-#
-if [ "$#" -lt 1 ]; then
-    usage
-    exit 1
-fi
+
+function main {
+
+    #
+    # Initial check for at least the module name
+    #
+    if [ "$#" -lt 1 ]; then
+        usage
+        exit 1
+    fi
 
 
-OPTIND=1
-while getopts dq opt; do
-    case $opt in
-    d)
-        BB_LOG_LEVEL="$BB_LOG_DEBUG"
-    ;;
-    q)
-        BB_LOG_LEVEL="$BB_LOG_WARNING"
-    ;;
-    esac
-done
-shift $((OPTIND - 1))
+    OPTIND=1
+    while getopts dq opt; do
+        case $opt in
+        d)
+            BB_LOG_LEVEL="$BB_LOG_DEBUG"
+        ;;
+        q)
+            BB_LOG_LEVEL="$BB_LOG_WARNING"
+        ;;
+        esac
+    done
+    shift $((OPTIND - 1))
 
-#
-# Figure out what module to load
-#
+    #
+    # Figure out what module to load
+    #
+    local module="$1"
+    shift
 
-MODULE="$1"
-shift
+    local modulepath="$MODULES_DIR/$module.module.sh"
+    local modulemainfunc="${module}_main"
 
-MODULE_PATH="$MODULES_DIR/$MODULE.module.sh"
-MODULE_MAIN_FUNC="${MODULE}_main"
+    # Load module and run it's main function
+    if [ -f "$modulepath" ]; then
+        source "$modulepath"
+        "$modulemainfunc" "$@" || bb-exit 1 "Failed to run $module"
+    else
+        bb-exit 1 "Unknown module '$module'"
+    fi
+}
 
-# Load module and run it's main function
-if [ -f "$MODULE_PATH" ]; then
-    source "$MODULE_PATH"
-    "$MODULE_MAIN_FUNC" "$@" || bb-exit 1 "Failed to run $MODULE"
-else
-    bb-exit 1 "Unknown module '$MODULE'"
-fi
+main "$@"
+exit $?
