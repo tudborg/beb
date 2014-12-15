@@ -8,6 +8,12 @@ It is built out of frustration with the `eb` tool that AWS provides,
 and currently supports only what i need to not go insane.
 
 
+Install
+----------------
+
+Clone this repo and symlink the `beb.sh` to somewhere on your `$PATH`
+
+
 AWS EB Platforms
 ----------------
 
@@ -39,6 +45,12 @@ To build and deploy a PHP composer projekt you will need:
 - Release (deploy an application version to an environment)
     - `aws`
 
+
+- - - 
+**note**
+You'll also need bash >4, as the bashbooster requires it.
+I'll be working on fixing this, as the bashbooster library is not
+really what we need anyway.
 
 
 
