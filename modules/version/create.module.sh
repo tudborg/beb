@@ -1,5 +1,5 @@
 
-function create_usage {
+function version_create_usage {
 
     cat <<EOL
 Usage:
@@ -15,14 +15,14 @@ EOL
 
 
 
-function create_main {
+function version_create_main {
 
     # Option parsing
     OPTIND=1
     while getopts h opt; do
         case $opt in
         h)
-            create_usage
+            version_create_usage
             exit 1
         ;;
         esac
@@ -30,7 +30,7 @@ function create_main {
     shift $((OPTIND - 1))
 
     if [ "$#" -lt "4" ]; then
-        create_usage
+        version_create_usage
         exit 1
     fi
 
