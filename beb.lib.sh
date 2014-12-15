@@ -1,6 +1,6 @@
 
 function is_git_repo {
-    git status --porcelain >/dev/null 2>/dev/null
+    git --git-dir "$1"/.git --work-tree "$1" status --porcelain >/dev/null 2>/dev/null
     return $?
 }
 
