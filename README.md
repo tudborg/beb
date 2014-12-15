@@ -8,6 +8,12 @@ It is built out of frustration with the `eb` tool that AWS provides,
 and currently supports only what i need to not go insane.
 
 
+Install
+----------------
+
+Clone this repo and symlink the `beb.sh` to somewhere on your `$PATH`
+
+
 AWS EB Platforms
 ----------------
 
