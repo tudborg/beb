@@ -84,7 +84,7 @@ function version_create_main {
             --source-bundle "S3Bucket=$bucket,S3Key=$key")
 
     if [ "$?" -eq 0 ]; then
-        bb-log-info "Successfully created application version"
+        bb-log-info "Successfully created application version '$label' for application '$application'"
     else
         bb-exit 1 "Could not create application version"
     fi
