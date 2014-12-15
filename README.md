@@ -40,6 +40,12 @@ To build and deploy a PHP composer projekt you will need:
     - `aws`
 
 
+- - - 
+**note**
+You'll also need bash >4, as the bashbooster requires it.
+I'll be working on fixing this, as the bashbooster library is not
+really what we need anyway.
+
 
 
 [awscli]: http://aws.amazon.com/cli/
