@@ -19,6 +19,8 @@ MODULE_FILE_POSTFIX=".module.sh"
 # settings for bashbooster
 BB_LOG_USE_COLOR=true
 BB_LOG_FORMAT='${TIME} [${LEVEL}] ${MESSAGE}'
+BB_WORKSPACE="/tmp/bb-workspace"
+
 # import bashbooster, mostly for logging and assertions.
 source "$SCRIPT_DIR/bashbooster.sh"
 

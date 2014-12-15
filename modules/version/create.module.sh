@@ -49,7 +49,7 @@ function version_create_main {
         bb-exit 1 "Got empty label"
     fi
     if [ -z "$description" ]; then
-        description="$label"
+        description="Release from '$label'"
     fi
 
     # check that application is valid
