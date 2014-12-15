@@ -77,7 +77,7 @@ function upload_main {
     if which du >/dev/null; then
         bb-log-info "Note that the filesize of the artifact is $(du -h $artifact | cut -f 1)"
     fi
-    aws --output=text s3 cp "$artifact" "s3://$bucket/$key" \
+    aws --output=text s3 cp "$artifact" "s3://$bucket/$key" >&2 \
         || bb-exit 1 "Failed to upload '$artifact' to bucket '$bucket' key '$key'"
 
     echo -e "$bucket\t$key"
