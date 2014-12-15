@@ -53,7 +53,9 @@ function create_main {
     fi
 
     # check that application is valid
-    local numapp="$(aws elasticbeanstalk describe-applications --application-names "$application" | wc -l)"
+    local numapp="$(aws elasticbeanstalk describe-applications \
+        --output=text \
+        --application-names "$application" | wc -l)"
     if [ "$numapp" -eq 0 ]; then
         bb-exit "Application with name '$application' Does not exist"
     fi
@@ -65,6 +67,7 @@ function create_main {
 
     # check that we don't already have another version by the same name (label)
     local numver="$(aws elasticbeanstalk describe-application-versions \
+        --output=text \
         --application-name "$application" \
         --version-labels "$label" | wc -l)"
     if [ "$numver" -gt 0 ]; then

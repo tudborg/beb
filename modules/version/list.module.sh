@@ -42,8 +42,8 @@ function version_list_main {
     # fetch application versiopns
     local versions
     versions="$(aws elasticbeanstalk describe-application-versions \
+        --output=text \
         --application-name "$application")"
-
 
     if [ "$(echo -n "$versions" | wc -l)" -eq 0 ]; then
         bb-log-warning "No application versions found for application '$application'"

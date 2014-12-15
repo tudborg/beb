@@ -56,13 +56,13 @@ function upload_main {
 
 
     # CHECK THAT BUCKET EXISTS
-    if ! aws s3api head-bucket --bucket "$bucket" >&2 2>/dev/null; then
+    if ! aws s3api head-bucket --output=text --bucket "$bucket" >&2 2>/dev/null; then
         bb-exit 1 "Bucket '$bucket' does not exist, or you don't have permission to access it."
     fi
 
     if ! $force; then
         # CHECK THAT KEY DOES _NOT_ EXIST
-        if aws s3api head-object --bucket "$bucket" --key "$key" >&2 2>/dev/null; then
+        if aws s3api head-object --output=text --bucket "$bucket" --key "$key" >&2 2>/dev/null; then
             bb-exit 1 "Key '$key' already exists in bucket '$bucket'."
         fi
     fi
@@ -77,7 +77,7 @@ function upload_main {
     if which du >/dev/null; then
         bb-log-info "Note that the filesize of the artifact is $(du -h $artifact | cut -f 1)"
     fi
-    aws s3 cp "$artifact" "s3://$bucket/$key" \
+    aws --output=text s3 cp "$artifact" "s3://$bucket/$key" \
         || bb-exit 1 "Failed to upload '$artifact' to bucket '$bucket' key '$key'"
 
     echo -e "$bucket\t$key"

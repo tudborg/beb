@@ -48,13 +48,16 @@ function release_main {
     fi
 
     # check that environment is valid
-    local numapp="$(aws elasticbeanstalk describe-environments --environment-names "$environment" | wc -l)"
+    local numapp="$(aws elasticbeanstalk describe-environments \
+        --output=text \
+        --environment-names "$environment" | wc -l)"
     if [ "$numapp" -eq 0 ]; then
         bb-exit "Environment with name '$environment' Does not exist"
     fi
 
     # check that we have a version named <label>
     local numver="$(aws elasticbeanstalk describe-application-versions \
+        --output=text \
         --version-labels "$label" | wc -l)"
     if [ "$numver" -lt 1 ]; then
         bb-exit 1 "Application Version with label "$label" does not exist"
@@ -78,8 +81,9 @@ function release_main {
     # poll for status updates
     while [ $status == "Updating" ]; do
         sleep 4
-        lastFetch="$(aws elasticbeanstalk describe-environments\
-                    --environment-names "$environment" --output=text | grep ENVIRONMENTS)"
+        lastFetch="$(aws elasticbeanstalk describe-environments \
+                    --output=text \
+                    --environment-names "$environment" | grep ENVIRONMENTS)"
         status=$(echo "$lastFetch" | cut -f 12)
         bb-log-info "'$environment' is in state: '$status'"
     done
