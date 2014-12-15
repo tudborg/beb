@@ -6,7 +6,7 @@ Usage:
     $SCRIPT_MAIN create -h
         This message.
 
-    $SCRIPT_MAIN create <application> <bucket> <key> <label> <description>
+    $SCRIPT_MAIN create <application> <bucket> <key> <label> [<description>]
         Create a new application version for <application>
         found on <bucket>://<key> with the label <label> and description <description>
 EOL
@@ -49,7 +49,7 @@ function version_create_main {
         bb-exit 1 "Got empty label"
     fi
     if [ -z "$description" ]; then
-        bb-exit 1 "Got empty description"
+        description="$label"
     fi
 
     # check that application is valid
