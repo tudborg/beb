@@ -48,7 +48,7 @@ ask() {
 
 
 #http://stackoverflow.com/questions/7126580/expand-a-possible-relative-path-in-bash
-dir_resolve() {
+function dir_resolve {
   local dir=`dirname "$1"`
   local file=`basename "$1"`
   pushd "$dir" &>/dev/null || return $? # On error, return error code
