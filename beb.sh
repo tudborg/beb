@@ -15,15 +15,10 @@ SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 MODULES_DIR="$SCRIPT_DIR/modules"
 SCRIPT_MAIN="${BASH_SOURCE[0]}"
 
-# settings for bashbooster
-BB_LOG_USE_COLOR=true
-BB_LOG_FORMAT='${TIME} [${LEVEL}] ${MESSAGE}'
-BB_WORKSPACE="/tmp/bb-workspace"
+# source our tiny bash lib
+source "$SCRIPT_DIR/lib0.sh"
 
-# import bashbooster, mostly for logging and assertions.
-source "$SCRIPT_DIR/bashbooster.sh"
-
-# import our own lib
+# import our beb specific lib
 source "$SCRIPT_DIR/beb.lib.sh"
 
 
@@ -74,10 +69,10 @@ main () {
     while getopts dq opt; do
         case $opt in
         d)
-            BB_LOG_LEVEL="$BB_LOG_DEBUG"
+            LIB0_LOG_LEVEL=1
         ;;
         q)
-            BB_LOG_LEVEL="$BB_LOG_WARNING"
+            LIB0_LOG_LEVEL=3
         ;;
         esac
     done
@@ -95,9 +90,9 @@ main () {
     # Load module and run it's main function
     if [ -f "$modulepath" ]; then
         source "$modulepath"
-        "$modulemainfunc" "$@" || bb-exit 1 "Failed to run $module"
+        "$modulemainfunc" "$@" || 0error "Failed to run $module"
     else
-        bb-exit 1 "Unknown module '$module'"
+        0exit 1 "Unknown module '$module'"
     fi
 }
 

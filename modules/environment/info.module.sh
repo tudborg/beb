@@ -26,7 +26,7 @@ environment_info_main () {
         --environment-names "$envname" | grep '^ENVIRONMENTS' )"
 
     if [ "$(echo -n "$envdata" | wc -w)" -eq 0 ]; then
-        bb-log-warning "Could not find environment '$envname'"
+        0warning "Could not find environment '$envname'"
         return 1
     fi
 

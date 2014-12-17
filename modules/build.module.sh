@@ -1,4 +1,7 @@
 
+BUILD_BASE_DIR="/tmp/beb-builds"
+
+
 build_usage () {
 
     cat <<EOL
@@ -24,7 +27,7 @@ EOL
 #
 build_detect_project () {
     local gitdir="$1"
-    bb-assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
+    0assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
 
     # PHP directory, look for composer.json file, or a php.project file
     if [ -f "$gitdir/composer.json" ]; then
@@ -54,16 +57,16 @@ build_compiler_noop () {
 build_compiler_php_composer () {
     # Check where we can find the composer bin
     # report error and return 1 if we cant find it
-    bb-var COMPOSER_BIN "composer"
-    bb-var COMPOSER_INSTALL_ARGS "-v --prefer-dist --no-dev --optimize-autoloader --ignore-platform-reqs"
-    if ! bb-exe? $COMPOSER_BIN; then
-        bb-log-error "Missing dependency: composer ( https://getcomposer.org/ )"
+    local composer_bin="${COMPOSER_BIN:-composer}"
+    local composer_install_args="${COMPOSER_INSTALL_ARGS:-"-v --prefer-dist --no-dev --optimize-autoloader --ignore-platform-reqs"}"
+    if ! 0exe? $composer_bin; then
+        0error "Missing dependency: composer ( https://getcomposer.org/ )"
         return 1
     fi
 
-    bb-log-info "Running composer..."
-    if ! $COMPOSER_BIN install $COMPOSER_INSTALL_ARGS; then
-        bb-log-error "Composed failed to run install"
+    0info "Running composer..."
+    if ! $composer_bin install $composer_install_args; then
+        0error "Composed failed to run install"
         return 1
     fi | sed 's/^/---->  /'
 
@@ -80,8 +83,8 @@ build_compiler_php_composer () {
 build_artifactor_zip () {
     local dir="$1"
     local artifact="$2"
-    bb-assert 'test -d "$dir"' "'$dir' is not a directory"
-    bb-assert 'bb-exe? zip' "Missing dependency: zip"
+    0assert 'test -d "$dir"' "'$dir' is not a directory"
+    0assert '0exe? zip' "Missing dependency: zip"
 
     pushd $dir >/dev/null
     if zip -q -r "$artifact" "." >&2; then
@@ -89,7 +92,7 @@ build_artifactor_zip () {
         return 0
     else
         popd >/dev/null
-        bb-log-error "Failed to create zip artifact from '$dir' to '$artifact'"
+        0error "Failed to create zip artifact from '$dir' to '$artifact'"
         return 1
     fi
 }
@@ -121,13 +124,13 @@ build_main () {
         exit 1
     fi
 
-    bb-exe? zip || bb-exit 1 "Missing zip"
-    bb-exe? git || bb-exit 1 "Missing git"
+    0exe? zip || 0exit 1 "Missing zip"
+    0exe? git || 0exit 1 "Missing git"
 
 
 
     local gitdir="$(dir_resolve $1)"
-    bb-assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
+    0assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
     
     if [ "$#" -lt "2" ]; then
         # only git dir given
@@ -146,7 +149,7 @@ build_main () {
 
 
     # assert that variables are correct-ish
-    bb-assert "touch -a $artifactfile 2>/dev/null" "'$artifactfile' is not writable"
+    0assert "touch -a $artifactfile 2>/dev/null" "'$artifactfile' is not writable"
     rm "$artifactfile"
 
 
@@ -154,36 +157,39 @@ build_main () {
     compilerfunc="$(build_detect_project $gitdir | cut -f 1)"
     artifacterfunc="$(build_detect_project $gitdir | cut -f 2)"
     projecttype="$(build_detect_project $gitdir | cut -f 3-)"
-    [ "$?" -eq "0" ] || bb-exit 1 "Could not detect project type for '$gitdir'"
+    [ "$?" -eq "0" ] || 0exit 1 "Could not detect project type for '$gitdir'"
 
-    bb-log-info "detected project type: $projecttype"
-    bb-log-debug "compiler function: $compilerfunc"
-    bb-log-debug "artifact function: $artifacterfunc"
+    0info "detected project type: $projecttype"
+    0debug "compiler function: $compilerfunc"
+    0debug "artifact function: $artifacterfunc"
+    
+    local compiledir="$BUILD_BASE_DIR/tmp-$( date +%s%N )"
+    mkdir -p "$compiledir" || 0exit 1 "failed to create '$BUILD_BASE_DIR'"
+    0on-exit-remove "$compiledir"
 
-    local compiledir="$(bb-tmp-dir)"
-    bb-log-debug "Original repo: '$gitdir'"
-    bb-log-debug "Build directory created at '$compiledir'"
-    bb-log-debug "Artifact will be placed at '$artifactfile'"
+    0debug "Original repo: '$gitdir'"
+    0debug "Build directory created at '$compiledir'"
+    0debug "Artifact will be placed at '$artifactfile'"
 
     # CLONE REPO TO COMPILE DIR
     git clone --depth 1 --recurse-submodules "file://$gitdir" "$compiledir"\
-        || bb-exit 1 "Failed to git clone '$gitdir' to a temp build directory"
+        || 0exit 1 "Failed to git clone '$gitdir' to a temp build directory"
 
     # for ease, go to the temp dir
     pushd "$compiledir" >/dev/null
 
     # BUILD
-    "$compilerfunc" "$compiledir" >&2 || bb-exit 1 "Failed to compile $projecttype"
+    "$compilerfunc" "$compiledir" >&2 || 0exit 1 "Failed to compile $projecttype"
 
     # ARTIFACT
-    "$artifacterfunc" "$compiledir" "$artifactfile" >&2 || bb-exit 1 "Failed to create artifact $projecttype"
+    "$artifacterfunc" "$compiledir" "$artifactfile" >&2 || 0exit 1 "Failed to create artifact $projecttype"
 
     # go back to prev. dir
     popd >/dev/null
 
 
     if which du >/dev/null; then
-        bb-log-info "Created artifact of size $(du -h "$artifactfile" | cut -f 1)"
+        0info "Created artifact of size $(du -h "$artifactfile" | cut -f 1)"
     fi
 
 

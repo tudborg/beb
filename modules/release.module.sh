@@ -35,16 +35,16 @@ release_main () {
 
     # assert that we have deps
 
-    bb-exe? aws || bb-exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
+    0exe? aws || 0exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
 
     local label="$1"
     local environment="$2"
 
     if [ -z "$label" ]; then
-        bb-exit 1 "Got empty label"
+        0exit 1 "Got empty label"
     fi
     if [ -z "$environment" ]; then
-        bb-exit 1 "Got empty environment"
+        0exit 1 "Got empty environment"
     fi
 
     # check that environment is valid
@@ -52,7 +52,7 @@ release_main () {
         --output=text \
         --environment-names "$environment" | wc -l)"
     if [ "$numapp" -eq 0 ]; then
-        bb-exit "Environment with name '$environment' Does not exist"
+        0exit "Environment with name '$environment' Does not exist"
     fi
 
     # check that we have a version named <label>
@@ -60,7 +60,7 @@ release_main () {
         --output=text \
         --version-labels "$label" | wc -l)"
     if [ "$numver" -lt 1 ]; then
-        bb-exit 1 "Application Version with label "$label" does not exist"
+        0exit 1 "Application Version with label "$label" does not exist"
     fi
 
     # create application version
@@ -71,9 +71,9 @@ release_main () {
         --version-label "$label" > /dev/null
 
     if [ "$?" -eq 0 ]; then
-        bb-log-info "Successfully started release..."
+        0info "Successfully started release..."
     else
-        bb-exit 1 "Could not start release."
+        0exit 1 "Could not start release."
     fi
 
     local lastFetch
@@ -85,7 +85,7 @@ release_main () {
                     --output=text \
                     --environment-names "$environment" | grep ENVIRONMENTS)"
         status=$(echo "$lastFetch" | cut -f 12)
-        bb-log-info "'$environment' is in state: '$status'"
+        0info "'$environment' is in state: '$status'"
     done
 
     local health="$(echo "$lastFetch"|cut -f 10)"
@@ -94,9 +94,9 @@ release_main () {
 
     local msg="$environment's health is $health, running version $running, updated at $updated"
     if [ "$health" == "Green" ]; then
-        bb-log-info "$msg"
+        0info "$msg"
     else
-        bb-log-warning "$msg"
+        0warning "$msg"
     fi
 
     echo -e "$environment\t$health\t$running"

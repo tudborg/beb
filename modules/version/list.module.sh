@@ -34,7 +34,7 @@ function version_list_main {
 
     # assert that we have deps
 
-    bb-exe? aws || bb-exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
+    0exe? aws || 0exit 1 "Missing AWS CLI ( http://aws.amazon.com/cli/ )"
 
 
     local application="$1"
@@ -46,7 +46,7 @@ function version_list_main {
         --application-name "$application")"
 
     if [ "$(echo -n "$versions" | wc -l)" -eq 0 ]; then
-        bb-log-warning "No application versions found for application '$application'"
+        0warning "No application versions found for application '$application'"
         return 1
     fi
 
