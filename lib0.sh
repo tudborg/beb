@@ -98,6 +98,8 @@ fi
 
 
 if [ "$LIB0_TEST" = true ]; then
+    # log tests
+    echo "______ LOG TESTS ______" >&2
     LIB0_LOG_LEVEL=1
     lib0-log-debug "log debug"
     lib0-log-info "log info"
