@@ -66,13 +66,17 @@ main () {
 
 
     OPTIND=1
-    while getopts dq opt; do
+    while getopts dqv opt; do
         case $opt in
         d)
             LIB0_LOG_LEVEL=1
         ;;
         q)
             LIB0_LOG_LEVEL=3
+        ;;
+        v)
+            echo -e "beb\t$(get_git_tagish "$SCRIPT_DIR")"
+            exit 1
         ;;
         esac
     done
