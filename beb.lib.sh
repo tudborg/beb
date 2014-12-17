@@ -64,9 +64,12 @@ submodule_main () {
     # Load module and run it's main function
     if [ -f "$modulepath" ]; then
         source "$modulepath"
-        "$modulemainfunc" "$@" || bb-exit 1 "Failed to run $module"
+        "$modulemainfunc" "$@"
+        if [ "$?" -gt 0 ]; then
+            bb-exit 1 "Failed to run '${modname}' -> '$submodname'"
+        fi
     else
-        bb-exit 1 "Unknown module '$submodname'"
+        bb-exit 1 "Unknown submodule '$submodname'"
     fi
 
     # restore script main
