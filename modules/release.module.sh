@@ -1,5 +1,5 @@
 
-function release_usage {
+release_usage () {
 
     cat <<EOL
 Usage:
@@ -14,7 +14,7 @@ EOL
 
 
 
-function release_main {
+release_main () {
 
     # Option parsing
     OPTIND=1

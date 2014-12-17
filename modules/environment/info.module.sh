@@ -1,5 +1,5 @@
 
-function environment_info_main {
+environment_info_main () {
 
     echo ":)"
 

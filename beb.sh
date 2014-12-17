@@ -41,7 +41,7 @@ main_module_list () {
 #
 # Define our top-level usage message
 #
-function usage {
+usage () {
 
     cat <<EOL
 Usage:
@@ -59,7 +59,7 @@ EOL
 }
 
 
-function main {
+main () {
 
     #
     # Initial check for at least the module name

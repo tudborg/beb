@@ -1,4 +1,4 @@
 
-function environment_main {
+environment_main () {
     submodule_main "$MODULES_DIR" "environment" "$@"
 }

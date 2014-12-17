@@ -1,5 +1,5 @@
 
-function upload_usage {
+upload_usage () {
 
     cat <<EOL
 Usage:
@@ -17,7 +17,7 @@ EOL
 
 
 
-function upload_main {
+upload_main () {
 
     # Option parsing
     OPTIND=1

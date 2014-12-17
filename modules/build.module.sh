@@ -1,5 +1,5 @@
 
-function build_usage {
+build_usage () {
 
     cat <<EOL
 Usage:
@@ -22,7 +22,7 @@ EOL
 # If success, stdout will contain a line:
 # $compiler_func\t$artifactor_func\t$project_type_name
 #
-function build_detect_project {
+build_detect_project () {
     local gitdir="$1"
     bb-assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
 
@@ -42,7 +42,7 @@ function build_detect_project {
 #
 # build_compiler_noop does nothing
 #
-function build_compiler_noop {
+build_compiler_noop () {
     return 0
 }
 
@@ -51,7 +51,7 @@ function build_compiler_noop {
 # PHP Composer Project Builder
 # $1 must be path to temp build directory
 #
-function build_compiler_php_composer {
+build_compiler_php_composer () {
     # Check where we can find the composer bin
     # report error and return 1 if we cant find it
     bb-var COMPOSER_BIN "composer"
@@ -77,7 +77,7 @@ function build_compiler_php_composer {
 # Simply zips up the entire build' dir
 # $1 is the build dir,
 # $2 is the expected outfile
-function build_artifactor_zip {
+build_artifactor_zip () {
     local dir="$1"
     local artifact="$2"
     bb-assert 'test -d "$dir"' "'$dir' is not a directory"
@@ -102,7 +102,7 @@ function build_artifactor_zip {
 # Entrypoint
 #
 
-function build_main {
+build_main () {
 
     # Option parsing
     OPTIND=1

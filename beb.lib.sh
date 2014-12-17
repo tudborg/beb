@@ -1,10 +1,10 @@
 
-function is_git_repo {
+is_git_repo () {
     git --git-dir "$1"/.git --work-tree "$1" status --porcelain >/dev/null 2>/dev/null
     return $?
 }
 
-function get_git_tagish {
+get_git_tagish () {
     git --git-dir "$1"/.git --work-tree "$1" describe --dirty=-dirty --always --tags --long | sed 's/\//_/'
 }
 
@@ -131,7 +131,7 @@ ask() {
 
 
 #http://stackoverflow.com/questions/7126580/expand-a-possible-relative-path-in-bash
-function dir_resolve {
+dir_resolve () {
   local dir=`dirname "$1"`
   local file=`basename "$1"`
   pushd "$dir" &>/dev/null || return $? # On error, return error code
