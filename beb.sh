@@ -14,7 +14,6 @@ SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 MODULES_DIR="$SCRIPT_DIR/modules"
 SCRIPT_MAIN="${BASH_SOURCE[0]}"
-MODULE_FILE_POSTFIX=".module.sh"
 
 # settings for bashbooster
 BB_LOG_USE_COLOR=true
@@ -32,12 +31,9 @@ source "$SCRIPT_DIR/beb.lib.sh"
 #
 # function for listing available modules
 #
-function get_modules {
-    local file
-    for file in $(ls $MODULES_DIR | grep "$MODULE_FILE_POSTFIX\$")
-    do
-        echo "${file%$MODULE_FILE_POSTFIX}"
-    done
+main_module_list () {
+    module_list "$MODULES_DIR"
+    return $?
 }
 
 
@@ -57,7 +53,8 @@ Usage:
 
 Modules available:
 
-$(get_modules | sed 's/^/    /')
+$(main_module_list | sed 's/^/    /')
+
 EOL
 }
 
