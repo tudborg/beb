@@ -143,8 +143,7 @@ fi
         # To protect accidental deleting of root folders, we check that name is longer than 5 characters.
         # This is a pretty stupid protection, and should be fixed to something better
         if [ ${#name} -gt 5 ]; then
-            #rm -rf "$name"
-            echo rm -rf "$name"
+            rm -rf "$name"
         else
             0warning "Refusing to delete '$name'"
         fi
