@@ -23,8 +23,10 @@ environment_info_main () {
     local envdata
     envdata="$(aws elasticbeanstalk describe-environments \
         --output=text \
-        --environment-names "$envname" | grep '^ENVIRONMENTS' )"
-
+        --environment-names "$envname" | grep '^ENVIRONMENTS')"
+    if [ "$?" -gt 0 ]; then
+        return 1
+    fi
     if [ "$(echo -n "$envdata" | wc -w)" -eq 0 ]; then
         0warning "Could not find environment '$envname'"
         return 1
