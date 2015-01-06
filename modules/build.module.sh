@@ -9,10 +9,15 @@ Usage:
     $SCRIPT_MAIN build -h
         This message.
 
-    $SCRIPT_MAIN build <git-dir> [<bundle-out-file>]
+    $SCRIPT_MAIN build [-r <label-file-name>] <git-dir> [<bundle-out-file>]
         Build a zip-bundle placed at <bundle-out-file> from git repo at <git-dir>.
         If <bundle-out-file> is not given, it will default to something sane
         based on your git repo's refs.
+
+        -r <label-file-name>    Will write a text file to the build directory with
+                                a git commit-ish. Usually will be latest tag and
+                                number of commits ahead.
+                                Useful for identifying build origins from their bundle.
 
 EOL
 
@@ -109,11 +114,15 @@ build_main () {
 
     # Option parsing
     OPTIND=1
-    while getopts h opt; do
+    local labelfile
+    while getopts hr: opt; do
         case $opt in
         h)
             build_usage
             exit 1
+        ;;
+        r)
+            labelfile="$OPTARG"
         ;;
         esac
     done
@@ -131,11 +140,11 @@ build_main () {
 
     local gitdir="$(dir_resolve $1)"
     0assert "is_git_repo $gitdir" "'$gitdir' is not a git directory"
+    # nice tag-ish kind of string.
+    local tagish="$(get_git_tagish "$gitdir")"
     
     if [ "$#" -lt "2" ]; then
         # only git dir given
-        # figure out name from that
-        local tagish="$(get_git_tagish "$gitdir")"
         local artifactfile="$(dir_resolve "./$tagish.zip")"
     else
         # name given
@@ -177,6 +186,11 @@ build_main () {
 
     # for ease, go to the temp dir
     pushd "$compiledir" >/dev/null
+
+    # if labelfile is given, create the label.txt file in the build root
+    if [ ! -z "$labelfile" ]; then
+        echo "$tagish" > $labelfile || 0warning "Could not create $labelfile"
+    fi
 
     # BUILD
     "$compilerfunc" "$compiledir" >&2 || 0exit 1 "Failed to compile $projecttype"
