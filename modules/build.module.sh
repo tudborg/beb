@@ -164,7 +164,7 @@ build_main () {
     0debug "artifact function: $artifacterfunc"
     
     local compiledir="$BUILD_BASE_DIR/tmp-$( date +%s%N )"
-    mkdir -p "$compiledir" || 0exit 1 "failed to create '$BUILD_BASE_DIR'"
+    mkdir -p "$compiledir" || 0exit 1 "failed to create '$compiledir'"
     0on-exit-remove "$compiledir"
 
     0debug "Original repo: '$gitdir'"
