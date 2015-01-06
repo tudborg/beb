@@ -56,7 +56,7 @@ submodule_main () {
     # as this is a submodule, rewrite script main
     # to be path of submodule root
     local originalmain="$SCRIPT_MAIN"
-    SCRIPT_MAIN="$originalmain environment"
+    SCRIPT_MAIN="$originalmain ${modname}"
 
     local modulepath="$moddir/${modname}/${submodname}.module.sh"
     local modulemainfunc="${modname}_${submodname}_main"
