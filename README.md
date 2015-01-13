@@ -11,7 +11,26 @@ and currently supports only what i need to not go insane.
 Install
 ----------------
 
-Clone this repo and symlink the `beb.sh` to somewhere on your `$PATH`
+Clone this repo and symlink the `beb.sh` to somewhere on your `$PATH` so that it will be callable
+with the command `beb`.
+Validate the install by simply running `beb` and should should get something like:
+```
+$ beb
+Usage:
+
+    /Users/tbug/bin/beb [-d] [-q] <module> [-h] [<args>...]
+
+    -d      Log at debug level
+    -q      Log at warning level
+
+Modules available:
+
+    build
+    environment
+    release
+    upload
+    version
+```
 
 
 AWS EB Platforms
