@@ -21,7 +21,7 @@ _beb()
             return 0
             ;;
         environment)
-            opts="info"
+            opts="info list"
             COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
             return 0
             ;;
