@@ -51,7 +51,7 @@ interaction with AWS.
 You can build without these dependencies, as only modules that use
 them, will check for their presence.
 
-To build and deploy a PHP composer projekt you will need:
+To build and deploy a PHP composer project you will need:
 
 - Build (build the zip artifact)
     - `git`
