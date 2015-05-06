@@ -39,6 +39,14 @@ $ beb version list -h
 ```
 
 
+Command Completion
+--------------------
+
+The tool also ships with a bash completion file.
+Simply source the `completion.bash` and you have tab-completion
+on your `beb` commands.
+
+
 AWS EB Platforms
 ----------------
 
