@@ -6,7 +6,7 @@ Usage:
     $SCRIPT_MAIN upload -h
         This message.
 
-    $SCRIPT_MAIN upload [-f] <artifact> <bucket> <key>
+    $SCRIPT_MAIN upload [-f] <artifact> <bucket> [<key>]
         Upload the artifact to <bucket> at <key>,
         but fails if <key> is already present.
         (we don't want to re-write a previous version!)
