@@ -13,7 +13,7 @@ Install
 
 Clone this repo and symlink the `beb.sh` to somewhere on your `$PATH` so that it will be callable
 with the command `beb`.
-Validate the install by simply running `beb` and should should get something like:
+Validate the install by simply running `beb` and you should see something like:
 ```
 $ beb
 Usage:
@@ -63,13 +63,6 @@ To build and deploy a PHP composer project you will need:
     - `aws`
 - Release (deploy an application version to an environment)
     - `aws`
-
-
-- - - 
-**note**
-You'll also need bash >4, as the bashbooster requires it.
-I'll be working on fixing this, as the bashbooster library is not
-really what we need anyway.
 
 
 
