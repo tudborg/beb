@@ -6,7 +6,7 @@ Usage:
     $SCRIPT_MAIN create -h
         This message.
 
-    $SCRIPT_MAIN create <application> <bucket> <key> <label> [<description>]
+    $SCRIPT_MAIN create <application-name> <bucket> <key> <label> [<description>]
         Create a new application version for <application>
         found on <bucket>://<key> with the label <label> and description <description>
 EOL

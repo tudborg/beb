@@ -6,7 +6,7 @@ Usage:
     $SCRIPT_MAIN list -h
         This message.
 
-    $SCRIPT_MAIN list <application>
+    $SCRIPT_MAIN list <application-name>
         List available application versions
 EOL
 

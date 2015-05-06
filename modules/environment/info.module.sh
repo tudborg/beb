@@ -5,8 +5,8 @@ Usage:
     $SCRIPT_MAIN info
         This message.
 
-    $SCRIPT_MAIN info <environment>
-        Info about <environment>
+    $SCRIPT_MAIN info <environment-name>
+        Info about <environment-name>
 EOL
 }
 

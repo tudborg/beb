@@ -5,7 +5,7 @@ Usage:
     $SCRIPT_MAIN list
         This message.
 
-    $SCRIPT_MAIN list [<application name>]
+    $SCRIPT_MAIN list [<application-name>]
         List available environments.
         Optionally filter by application name.
 EOL

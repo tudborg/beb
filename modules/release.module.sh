@@ -6,8 +6,8 @@ Usage:
     $SCRIPT_MAIN release -h
         This message.
 
-    $SCRIPT_MAIN release <label> <environment>
-        Release <label> to <environment>
+    $SCRIPT_MAIN release <label> <environment-name>
+        Release <label> to <environment-name>
 EOL
 
 }

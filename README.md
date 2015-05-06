@@ -32,6 +32,12 @@ Modules available:
     version
 ```
 
+All beb components use `-h` for showing it's help message.
+E.g:
+```
+$ beb version list -h
+```
+
 
 AWS EB Platforms
 ----------------
