@@ -84,11 +84,11 @@ release_main () {
         lastFetch="$(aws elasticbeanstalk describe-environments \
                     --output=text \
                     --environment-names "$environment" | grep ENVIRONMENTS)"
-        status=$(echo "$lastFetch" | cut -f 12)
+        status=$(echo "$lastFetch" | cut -f 13)
         0info "'$environment' is in state: '$status'"
     done
 
-    local health="$(echo "$lastFetch"|cut -f 10)"
+    local health="$(echo "$lastFetch"|cut -f 11)"
     local running="$(echo "$lastFetch"|cut -f 13)"
     local updated="$(echo "$lastFetch"|cut -f 5)"
 
