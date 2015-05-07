@@ -89,16 +89,16 @@ release_main () {
     done
 
     local health="$(echo "$lastFetch"|cut -f 11)"
-    local running="$(echo "$lastFetch"|cut -f 13)"
+    local version="$(echo "$lastFetch"|cut -f 14)"
     local updated="$(echo "$lastFetch"|cut -f 5)"
 
-    local msg="$environment's health is $health, running version $running, updated at $updated"
+    local msg="$environment's health is $health, running version $version, updated at $updated"
     if [ "$health" == "Green" ]; then
         0info "$msg"
     else
         0warning "$msg"
     fi
 
-    echo -e "$environment\t$health\t$running"
+    echo -e "$environment\t$health\t$version"
 
 }
