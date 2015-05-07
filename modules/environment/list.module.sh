@@ -49,7 +49,7 @@ environment_list_main () {
 
     while read line
     do
-        local envname="$(echo "$line" | cut -f 2)"
+        local envname="$(echo "$line" | cut -f 3)"
         local updated="$(echo "$line" | cut -f 5)"
         local health="$(echo "$line" | cut -f 11)"
         local stack="$(echo "$line" | cut -f 12)"
