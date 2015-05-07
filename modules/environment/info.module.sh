@@ -33,10 +33,10 @@ environment_info_main () {
     fi
 
     local updated="$(echo "$envdata" | cut -f 5)"
-    local health="$(echo "$envdata" | cut -f 10)"
-    local stack="$(echo "$envdata" | cut -f 11)"
-    local state="$(echo "$envdata" | cut -f 12)"
-    local release="$(echo "$envdata" | cut -f 13)"
+    local health="$(echo "$envdata" | cut -f 11)"
+    local stack="$(echo "$envdata" | cut -f 12)"
+    local state="$(echo "$envdata" | cut -f 13)"
+    local release="$(echo "$envdata" | cut -f 14)"
 
     cat <<EOL
 Name:		$envname

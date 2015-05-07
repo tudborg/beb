@@ -51,10 +51,10 @@ environment_list_main () {
     do
         local envname="$(echo "$line" | cut -f 2)"
         local updated="$(echo "$line" | cut -f 5)"
-        local health="$(echo "$line" | cut -f 10)"
-        local stack="$(echo "$line" | cut -f 11)"
-        local state="$(echo "$line" | cut -f 12)"
-        local release="$(echo "$line" | cut -f 13)"
+        local health="$(echo "$line" | cut -f 11)"
+        local stack="$(echo "$line" | cut -f 12)"
+        local state="$(echo "$line" | cut -f 13)"
+        local release="$(echo "$line" | cut -f 14)"
 
         cat <<EOL
 Name:       $envname
