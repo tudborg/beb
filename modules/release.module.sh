@@ -78,6 +78,7 @@ release_main () {
     local lastFetch
     local lastState
     local state="Updating"
+    local dotting=false
     # poll for state updates
     while [ "$state" == "Updating" ]; do
         sleep 2
@@ -85,8 +86,12 @@ release_main () {
         state="$(echo "$lastFetch" | grep State | cut -f 2)"
         if [ "$state" == "$lastState" ]; then
             echo -n "."
+            dotting=true
         else
-            echo ""
+            if [ "$dotting" = true ]; then
+                echo "" # newline before writing info
+                dotting=false
+            fi
             0info "'$environment' is in state: '$state'"
         fi
         lastState="$state"
