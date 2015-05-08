@@ -25,18 +25,22 @@ environment_list_main () {
     done
     shift $((OPTIND - 1))
 
+    local query="Environments[*].[EnvironmentName,VersionLabel,Status,SolutionStackName,Health,DateUpdated]"
+
     if [ "$#" -lt "1" ]; then
         # no app name, list all envs
         envdata="$(aws elasticbeanstalk describe-environments \
-            --output=text | grep '^ENVIRONMENTS')"
+            --query="$query" \
+            --output=text)"
         if [ "$?" -gt 0 ]; then
             return 1
         fi
     else
         appname="$1"
         envdata="$(aws elasticbeanstalk describe-environments \
+            --query="$query" \
             --output=text \
-            --application-name="$appname" | grep '^ENVIRONMENTS')"
+            --application-name="$appname")"
         if [ "$?" -gt 0 ]; then
             return 1
         fi
@@ -49,12 +53,12 @@ environment_list_main () {
 
     while read line
     do
-        local envname="$(echo "$line" | cut -f 3)"
-        local updated="$(echo "$line" | cut -f 5)"
-        local health="$(echo "$line" | cut -f 11)"
-        local stack="$(echo "$line" | cut -f 12)"
-        local state="$(echo "$line" | cut -f 13)"
-        local release="$(echo "$line" | cut -f 14)"
+        local envname="$(echo "$line" | cut -f 1)"
+        local label="$(echo "$line" | cut -f 2)"
+        local state="$(echo "$line" | cut -f 3)"
+        local stack="$(echo "$line" | cut -f 4)"
+        local health="$(echo "$line" | cut -f 5)"
+        local updated="$(echo "$line" | cut -f 6)"
 
         cat <<EOL
 Name:       $envname
@@ -62,7 +66,7 @@ Health:     $health
 Stack:      $stack
 State:      $state
 updated:    $updated
-release:    $release
+release:    $label
 ------------------------------------------------------------
 EOL
 

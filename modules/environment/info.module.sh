@@ -11,7 +11,6 @@ EOL
 }
 
 environment_info_main () {
-
     if [ "$#" -lt 1 ]; then
         environment_info_usage
         exit 1
@@ -23,7 +22,8 @@ environment_info_main () {
     local envdata
     envdata="$(aws elasticbeanstalk describe-environments \
         --output=text \
-        --environment-names "$envname" | grep '^ENVIRONMENTS')"
+        --query 'Environments[*].[EnvironmentName, VersionLabel, Status, SolutionStackName, Health, DateUpdated]' \
+        --environment-names "$envname")"
     if [ "$?" -gt 0 ]; then
         return 1
     fi
@@ -32,20 +32,20 @@ environment_info_main () {
         return 1
     fi
 
-    local updated="$(echo "$envdata" | cut -f 5)"
-    local health="$(echo "$envdata" | cut -f 11)"
-    local stack="$(echo "$envdata" | cut -f 12)"
-    local state="$(echo "$envdata" | cut -f 13)"
-    local release="$(echo "$envdata" | cut -f 14)"
+    local envname="$(echo "$envdata" | cut -f 1)"
+    local label="$(echo "$envdata" | cut -f 2)"
+    local state="$(echo "$envdata" | cut -f 3)"
+    local stack="$(echo "$envdata" | cut -f 4)"
+    local health="$(echo "$envdata" | cut -f 5)"
+    local updated="$(echo "$envdata" | cut -f 6)"
 
     cat <<EOL
-Name:		$envname
-Health:		$health
-Stack: 		$stack
-State:		$state
-
+Name:   	$envname
+Health: 	$health
+Stack:  	$stack
+State:  	$state
 updated:	$updated
-release:	$release
+release:	$label
 EOL
 
 }
