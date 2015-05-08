@@ -79,9 +79,6 @@ To build and deploy a PHP composer project you will need:
     - `aws`
 
 
-**NOTE** that the AWS cli currently needs to be version ~1.7.25
-
-
 
 Usage
 ============
