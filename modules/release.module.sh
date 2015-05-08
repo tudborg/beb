@@ -48,16 +48,15 @@ release_main () {
     fi
 
     # check that environment is valid
-    local numapp="$(aws elasticbeanstalk describe-environments \
-        --output=text \
-        --environment-names "$environment" | wc -l)"
+    local numapp="$("$SCRIPT_MAIN" environment info "$environment" 2>/dev/null | wc -l)"
     if [ "$numapp" -eq 0 ]; then
-        0exit "Environment with name '$environment' Does not exist"
+        0exit 1 "Environment with name '$environment' Does not exist"
     fi
 
     # check that we have a version named <label>
     local numver="$(aws elasticbeanstalk describe-application-versions \
         --output=text \
+        --query='ApplicationVersions[*].[VersionLabel]' \
         --version-labels "$label" | wc -l)"
     if [ "$numver" -lt 1 ]; then
         0exit 1 "Application Version with label "$label" does not exist"
@@ -77,20 +76,25 @@ release_main () {
     fi
 
     local lastFetch
-    local status="Updating"
-    # poll for status updates
-    while [ $status == "Updating" ]; do
-        sleep 4
-        lastFetch="$(aws elasticbeanstalk describe-environments \
-                    --output=text \
-                    --environment-names "$environment" | grep ENVIRONMENTS)"
-        status=$(echo "$lastFetch" | cut -f 13)
-        0info "'$environment' is in state: '$status'"
+    local lastState
+    local state="Updating"
+    # poll for state updates
+    while [ "$state" == "Updating" ]; do
+        sleep 2
+        lastFetch="$("$SCRIPT_MAIN" environment info "$environment")"
+        state="$(echo "$lastFetch" | grep State | cut -f 2)"
+        if [ "$state" == "$lastState" ]; then
+            echo -n "."
+        else
+            echo ""
+            0info "'$environment' is in state: '$state'"
+        fi
+        lastState="$state"
     done
 
-    local health="$(echo "$lastFetch"|cut -f 11)"
-    local version="$(echo "$lastFetch"|cut -f 14)"
-    local updated="$(echo "$lastFetch"|cut -f 5)"
+    local health="$(echo "$lastFetch" | grep Health | cut -f 2)"
+    local version="$(echo "$lastFetch" | grep Release | cut -f 2)"
+    local updated="$(echo "$lastFetch" | grep Updated | cut -f 2)"
 
     local msg="$environment's health is $health, running version $version, updated at $updated"
     if [ "$health" == "Green" ]; then
