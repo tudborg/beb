@@ -43,6 +43,7 @@ function version_list_main {
     local versions
     versions="$(aws elasticbeanstalk describe-application-versions \
         --output=text \
+        --query='ApplicationVersions[*].[ApplicationName,VersionLabel,DateUpdated,Description]' \
         --application-name "$application")"
 
     if [ "$(echo -n "$versions" | wc -l)" -eq 0 ]; then
@@ -51,6 +52,6 @@ function version_list_main {
     fi
 
     echo "$versions" | awk -F "\t" \
-        '/APPLICATIONVERSIONS/{ print "- Version:\t" $6 "\n  Updated:\t" $4 "\n  Description:\t" $5 "\n" }'
+        '{ print "- Version:\t" $2 "\n  Updated:\t" $3 "\n  Description:\t" $4 "\n" }'
 
 }
