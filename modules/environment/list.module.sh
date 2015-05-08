@@ -65,8 +65,8 @@ Name:       $envname
 Health:     $health
 Stack:      $stack
 State:      $state
-updated:    $updated
-release:    $label
+Updated:    $updated
+Release:    $label
 ------------------------------------------------------------
 EOL
 
