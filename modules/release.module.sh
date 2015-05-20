@@ -48,10 +48,12 @@ release_main () {
     fi
 
     # check that environment is valid
-    local numapp="$("$SCRIPT_MAIN" environment info "$environment" 2>/dev/null | wc -l)"
-    if [ "$numapp" -eq 0 ]; then
+    local currentenv="$("$SCRIPT_MAIN" environment info "$environment" 2>/dev/null)"
+    if [ "$(echo $currentenv | wc -l)" -eq 0 ]; then
         0exit 1 "Environment with name '$environment' Does not exist"
     fi
+
+    echo "$currentenv"
 
     # check that we have a version named <label>
     local numver="$(aws elasticbeanstalk describe-application-versions \
